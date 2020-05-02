@@ -30,9 +30,7 @@ class Panel extends Component<PanelProps, PanelState> {
         if (panel) {
             if (visible) {
                 panel!.classList.remove('collapse');
-                panel!.classList.add('expand');
             } else {
-                panel!.classList.remove('expand');
                 panel!.classList.add('collapse');
             }
         }

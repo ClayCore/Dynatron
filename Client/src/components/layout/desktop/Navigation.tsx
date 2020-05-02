@@ -27,7 +27,7 @@ class Navigation extends Component<NavigationProps, NavigationState> {
             );
         } else {
             return (
-                <Link to={where}>
+                <Link to={where} key={where}>
                     <div className="option">
                         <i className={iconTag}></i>
                     </div>
@@ -39,7 +39,9 @@ class Navigation extends Component<NavigationProps, NavigationState> {
     createLinks(link: { where: string[]; icons: string[]; info: string[] }) {
         let links = new Array<JSX.Element>();
         for (let i = 0; i < link.where.length; i++) {
-            links.push(this.createLink(link.where[i], link.icons[i], link.info[i]));
+            links.push(
+                this.createLink(link.where[i], link.icons[i], link.info[i])
+            );
         }
         return links;
     }

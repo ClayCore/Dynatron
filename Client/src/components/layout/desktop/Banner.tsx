@@ -15,7 +15,7 @@ class Banner extends Component<BannerProps, BannerState> {
     render() {
         const { visible } = this.props;
         if (visible) {
-            return <div id="banner" className="expand"></div>;
+            return <div id="banner"></div>;
         } else {
             return <div id="banner" className="collapse"></div>;
         }

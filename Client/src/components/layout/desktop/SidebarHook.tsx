@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface SidebarHookProps {
     visible: boolean;
     handle: Function;
 }
 export interface SidebarHookState {
-    arrow: string;
-    iconNode: Element | null;
     icon: Element | null;
 }
 
@@ -15,8 +14,6 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
         super(props);
 
         this.state = {
-            arrow: 'caret-back',
-            iconNode: null,
             icon: null,
         };
 
@@ -24,20 +21,33 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
     }
 
     componentDidMount() {
-        const { arrow } = this.state;
-        let iconNode = document.querySelector('#sidebar #button');
+        let icon = document.querySelector('#sidebar #button svg');
+        this.setState({ icon: icon });
+    }
 
-        let ionicIcon = document.createElement('ion-icon');
-        ionicIcon.setAttribute('name', arrow);
-        iconNode?.appendChild(ionicIcon);
+    createButton() {
+        const { visible } = this.props;
 
-        let icon = document.querySelector('#sidebar #button ion-icon');
-        this.setState({ iconNode: iconNode, icon: icon });
+        if (visible) {
+            return (
+                <div id="button" onClick={this.click}>
+                    <FontAwesomeIcon icon="angle-double-left" />
+                    <div>Collapse Sidebar</div>
+                </div>
+            );
+        } else {
+            return (
+                <div id="button" onClick={this.click} className="collapse">
+                    <FontAwesomeIcon icon="angle-double-left" />
+                    <div style={{ opacity: 0 }}>Collapse Sidebar</div>
+                </div>
+            );
+        }
     }
 
     // Toggle the icon rotation
     update() {
-        let icon = document.querySelector('#sidebar #button ion-icon');
+        const { icon } = this.state;
         const { visible } = this.props;
 
         if (icon) {
@@ -57,7 +67,7 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
     }
 
     render() {
-        return <div id="button" onClick={this.click}></div>;
+        return this.createButton();
     }
 }
 

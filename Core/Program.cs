@@ -1,18 +1,19 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using WebWindows;
 
 namespace Dynatron.Core {
     internal class Program {
-        private static readonly string m_EntryPoint = "Web/build/index.html";
-        private static WebWindow m_Window;
+        private static readonly string m_EntryPoint = "./Web/build/debug/index.html";
         static void Main(string[] args) {
-            m_Window = new WebWindow("Dynatron Server");
-
             if (File.Exists(m_EntryPoint)) {
-                m_Window.NavigateToLocalFile(m_EntryPoint);
-            }
+                Console.WriteLine("[INFO/Thread]: File exists!");
 
-            m_Window.WaitForExit();
+                WebWindow m_Window = new WebWindow("Dynatron Server");
+                m_Window.NavigateToLocalFile(m_EntryPoint);
+                m_Window.Show();
+                m_Window.WaitForExit();
+            }
         }
     }
 }

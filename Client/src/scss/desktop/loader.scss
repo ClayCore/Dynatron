@@ -55,12 +55,12 @@ $loader-color: $main-fgcolor;
 
 .loaded {
     #loader-wrapper {
-        transform: translateY(-100%);
         transition: all 0.6s 1s ease-out;
         opacity: 0;
         visibility: hidden;
 
         .loader {
+            transform: translateY(-1000%);
             transition: all 0.3s 1s ease-out;
             opacity: 0;
         }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Settings from './Settings';
 
 export interface TopbarProps {}
 export interface TopbarState {}
@@ -24,7 +23,6 @@ class Topbar extends Component<TopbarProps, TopbarState> {
                 <Link to="register">
                     <div className="option">Register</div>
                 </Link>
-                <Settings />
             </div>
         );
     }

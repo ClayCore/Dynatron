@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App, { isMobile } from './App';
+import initFonts from './utils/icon-library';
 
 (function () {
     // Padding for main page loader
@@ -25,7 +26,9 @@ import App, { isMobile } from './App';
 
     // Makes sure we're not running in a production environment while debugging etc.
     function checkEnv() {
-        return !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? true : false;
+        return !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
+            ? true
+            : false;
     }
 
     function linkStyles() {
@@ -38,20 +41,25 @@ import App, { isMobile } from './App';
 
     function init() {
         // Wait for DOM to finish loading
-        window.addEventListener('DOMContentLoaded', () => {
-            let entryPoint = $('#root');
-            let body = $('body');
+        window.addEventListener(
+            'DOMContentLoaded',
+            () => {
+                let entryPoint = $('#root');
+                let body = $('body');
 
-            linkStyles();
+                initFonts();
+                linkStyles();
 
-            // Add the loader only to the root webpage
-            onReady(function () {
-                body!.classList.add('loaded');
-            });
+                // Add the loader only to the root webpage
+                onReady(function () {
+                    body!.classList.add('loaded');
+                });
 
-            // Render everything
-            ReactDOM.render(<App />, entryPoint);
-        }, false);
+                // Render everything
+                ReactDOM.render(<App />, entryPoint);
+            },
+            false
+        );
     }
 
     init();

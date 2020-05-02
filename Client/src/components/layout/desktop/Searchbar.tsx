@@ -17,7 +17,7 @@ class Searchbar extends Component<SearchbarProps, SearchbarState> {
 
         if (visible) {
             return (
-                <div id="searchbar" className="expand">
+                <div id="searchbar">
                     <input type="text" placeholder="Search..." />
                 </div>
             );

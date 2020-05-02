@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom'; 
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import platform from 'platform';
 
 import Wrapper from './components/layout/Wrapper';
@@ -9,7 +9,7 @@ export function isMobile() {
     let deviceWidth = window.screen.width * window.devicePixelRatio;
     let mobileAgent = platform.name!.includes('Mobile');
 
-    return (deviceWidth < 800) || (mobileAgent);
+    return deviceWidth < 800 || mobileAgent;
 }
 
 export interface AppProps {}
@@ -28,12 +28,12 @@ class App extends Component<AppProps, AppState> {
                 <Switch>
                     <Route exact path="/">
                         <Wrapper>
-
+                            
                         </Wrapper>
                     </Route>
                 </Switch>
             </Router>
-        )
+        );
     }
 }
 
