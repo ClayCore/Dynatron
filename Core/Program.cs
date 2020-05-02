@@ -1,19 +1,28 @@
 ﻿using System;
 using System.IO;
-using WebWindows;
+using System.Diagnostics;
+using SpiderEye;
+using SpiderEye.Windows;
 
 namespace Dynatron.Core {
-    internal class Program {
-        private static readonly string m_EntryPoint = "./Web/build/debug/index.html";
-        static void Main(string[] args) {
-            if (File.Exists(m_EntryPoint)) {
-                Console.WriteLine("[INFO/Thread]: File exists!");
+    public abstract class ProgramBase {
+        protected static void Run() {
+            using (var window = new Window()) {
+                Application.ContentProvider = new EmbeddedContentProvider("Client\\build\\debug\\");
 
-                WebWindow m_Window = new WebWindow("Dynatron Server");
-                m_Window.NavigateToLocalFile(m_EntryPoint);
-                m_Window.Show();
-                m_Window.WaitForExit();
+                window.EnableDevTools = true;
+
+                Application.Run(window, "index.html");
             }
+        }
+    }
+
+    internal class Program : ProgramBase {
+
+        [STAThread]
+        static void Main(string[] args) {
+            WindowsApplication.Init();
+            Run();
         }
     }
 }

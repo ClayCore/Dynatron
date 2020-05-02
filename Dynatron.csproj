@@ -1,17 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="Web\**" />
-      <EmbeddedResource Remove="Web\**" />
-      <None Remove="Web\**" />
+      <Compile Remove="Client\**" />
+      <Compile Remove="Server\**" />
+      <EmbeddedResource Remove="Client\**" />
+      <EmbeddedResource Remove="Server\**" />
+      <None Remove="Client\**" />
+      <None Remove="Server\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="WebWindow" Version="0.1.0-20200214.10" />
+        <PackageReference Include="Bildstein.SpiderEye.Windows" Version="1.0.0-beta.1" />
     </ItemGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
