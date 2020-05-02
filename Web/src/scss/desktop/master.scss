@@ -1,0 +1,107 @@
+@use 'reset';
+@use 'fonts';
+@use 'globals' as *;
+@use 'loader';
+
+html {
+    @extend %root-window;
+
+    body {
+        @extend %root-window;
+    }
+}
+
+#root {
+    @extend %root-window;
+
+    #wrapper {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Disable mobile layout.
+main#display {
+    width: 100%;
+    height: 100%;
+
+    #mobile {
+        display: none;
+    }
+
+    #desktop {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Sidebar and topbar
+#desktop {
+    @mixin default-box-shadow {
+        box-shadow: 5px 0px 5px 0px $darker-bgcolor;
+    }
+
+    $sidebar-length: 16rem;
+    $topbar-height: 3rem;
+
+    #sidebar {
+        
+        * {
+            transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
+        }
+
+        *.collapse {
+            width: $topbar-height !important;
+        }
+
+        $button-height: 5rem;
+
+        background-color: $main-bgcolor;
+        color: $main-fgcolor;
+
+        // Panel
+        #panel {
+            @include default-box-shadow;
+            position: relative;
+            width: $sidebar-length;
+            height: 100%;
+            z-index: 10;
+
+            #banner {
+                @extend %default-center;
+                height: 10rem;
+                background-color: $darker-bgcolor;
+            }
+        }
+
+        // collapse/expand button
+        #button {
+            @include default-box-shadow;
+            position: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 50%;
+            left: $sidebar-length;
+            width: 2.5rem;
+            height: $button-height;
+            border-bottom-right-radius: $button-height;
+            border-top-right-radius: $button-height;
+            background-color: $main-bgcolor;
+            z-index: 100;
+
+            // Icon for the button
+            ion-icon {
+                @extend %default-center;
+                width: 3rem;
+                height: 3rem;
+                font-size: 3rem;
+                color: $main-fgcolor;
+            }
+        }
+    }
+
+    #topbar {
+    }
+}

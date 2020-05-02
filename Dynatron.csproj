@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+      <Compile Remove="Web\**" />
+      <EmbeddedResource Remove="Web\**" />
+      <None Remove="Web\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="WebWindow" Version="0.1.0-20200214.10" />
+    </ItemGroup>
+    <PropertyGroup>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+</Project>
