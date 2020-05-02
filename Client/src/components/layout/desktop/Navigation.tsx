@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 export interface NavigationProps {
     visible: boolean;
@@ -12,16 +14,14 @@ class Navigation extends Component<NavigationProps, NavigationState> {
         this.state = {};
     }
 
-    createLink(where: string, icon: string, info: string) {
-        let iconTag = 'icon ion-md-' + icon;
-
+    createLink(where: string, iconTag: string, info: string) {
         const { visible } = this.props;
         if (visible) {
             return (
                 <Link to={where} key={where}>
                     <div className="option">
-                        <i className={iconTag}></i>
-                        <span>{info}</span>
+                        <FontAwesomeIcon icon={iconTag as IconName} />
+                        <div>{info}</div>
                     </div>
                 </Link>
             );
@@ -49,7 +49,7 @@ class Navigation extends Component<NavigationProps, NavigationState> {
     render() {
         let links = {
             where: ['about', 'temp', 'info', 'contact'],
-            icons: ['information-circle', 'map', 'basket', 'contact'],
+            icons: ['info-circle', 'sitemap', 'shopping-basket', 'address-card'],
             info: ['About', 'Temporary', 'Info', 'Contact'],
         };
 

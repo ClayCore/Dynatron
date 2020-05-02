@@ -38,12 +38,16 @@ main#display {
 
 // Sidebar and topbar
 #desktop {
-    @mixin default-box-shadow {
-        box-shadow: 5px 0px 5px 0px $darker-bgcolor;
+    @mixin horizontal-shadow {
+        box-shadow: 5px 0px 5px 0px $shadow-color;
+    }
+
+    @mixin vertical-shadow {
+        box-shadow: 0px 5px 5px 0px $shadow-color;
     }
 
     $sidebar-length: 16rem;
-    $topbar-height: 3rem;
+    $topbar-height: 2rem;
 
     #sidebar {
         * {
@@ -61,22 +65,85 @@ main#display {
 
         // Panel
         #panel {
-            @include default-box-shadow;
+            @include horizontal-shadow;
             position: relative;
             width: $sidebar-length;
             height: 100%;
             z-index: 10;
 
+            $banner-height: 10rem;
+            $searchbar-height: 2rem;
+
             #banner {
                 @extend %default-center;
-                height: 10rem;
-                background-color: $darker-bgcolor;
+                height: $banner-height;
+            }
+
+            #searchbar {
+                display: flex;
+                width: 100%;
+
+                input[type='text'] {
+                    width: calc(100% - #{$searchbar-height});
+                    background-color: $lighter-bgcolor;
+                    border: 0;
+                    border-bottom: 1px solid rgb(0, 0, 0, 0);
+                    box-sizing: border-box;
+                    color: $dim-fgcolor;
+                    font-size: 1rem;
+                    font-weight: 300;
+                    height: $searchbar-height;
+                    margin: 0;
+                    padding: 0;
+                    padding-left: 1rem;
+                    transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
+                }
+
+                input[type='text']:focus {
+                    border-bottom: 1px solid $main-accent;
+                }
+
+                input[type='text']:active {
+                    color: $main-fgcolor;
+                }
+            }
+
+            nav {
+                width: 100%;
+                height: calc(100% - #{$banner-height} - #{$searchbar-height});
+
+                a {
+                    @extend %default-center;
+                    height: $topbar-height;
+                    
+                    .option {
+                        @extend %default-center;
+                        justify-content: flex-start;
+                    }
+
+                    svg {
+                        
+                        width: 1.2rem;
+                        height: 1.2rem;
+                        font-size: 1.2rem;
+                        color: $main-fgcolor;
+                    }
+
+                    div {
+                        height: auto;
+                        width: 30%;
+                        margin-left: 1rem;
+                        font-size: 1rem;
+                        font-weight: 300;
+                        text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
+                    }
+                }
             }
         }
 
         // collapse/expand button
         #button {
-            @include default-box-shadow;
+            @include horizontal-shadow;
             position: fixed;
             display: flex;
             align-items: center;
@@ -96,17 +163,32 @@ main#display {
                 height: 1.5rem;
                 font-size: 1.5rem;
                 color: $main-fgcolor;
+                filter: drop-shadow(2px 2px 1px $shadow-color);
             }
 
             div {
                 width: calc(100% - 1.5rem - 2rem);
                 margin-left: 1rem;
-                font-size: 1.2rem;
+                font-size: 1.1rem;
                 white-space: nowrap;
+                font-weight: 300;
+                letter-spacing: 0.1rem;
+                text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
             }
         }
     }
 
     #topbar {
+        @extend %default-center;
+        @include vertical-shadow;
+        position: sticky;
+        top: 0;
+        right: 0;
+        justify-content: flex-start;
+        height: $topbar-height;
+        width: calc(100% - #{$sidebar-length});
+        background-color: $main-bgcolor;
+        color: $main-fgcolor;
+        padding-left: 1rem;
     }
 }
