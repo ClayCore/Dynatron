@@ -3,37 +3,35 @@
 @use 'fonts';
 @use 'loader';
 
+// This is necessary...
 html {
     @extend %root-window;
 
     body {
         @extend %root-window;
-    }
-}
 
-#root {
-    @extend %root-window;
-
-    #wrapper {
-        width: 100%;
-        height: 100%;
+        #root {
+            @extend %root-window;
+        
+            #wrapper {
+                @extend %root-window;
+            }
+        }
     }
 }
 
 // Disable mobile layout.
 main#display {
-    width: 100%;
-    height: 100%;
+    @extend %default-center;
 
     #mobile {
         display: none;
     }
 
     #desktop {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        flex-direction: row;
+        @extend %default-center;
+        align-items: initial;
+        justify-content: initial;
     }
 }
 
@@ -42,35 +40,16 @@ main#display {
     $sidebar-length: 16rem;
     $topbar-height: 2rem;
 
-    %default-button {
-        border: 0;
-        color: $main-fgcolor;
-        background-color: $light-bgcolor;
-    }
-
-    @mixin horizontal-shadow {
-        box-shadow: 5px 0px 5px 0px $shadow-color;
-    }
-
-    @mixin vertical-shadow {
-        box-shadow: 0px 5px 5px 0px $shadow-color;
-    }
-
-    @mixin default-animation {
-        transition: all 0.25s ease-in-out;
-    }
-
+    // Everything inside the sidebar is animated
     #sidebar {
+        @include apply-animation;
         $button-height: 5rem;
         
         background-color: $main-bgcolor;
         color: $main-fgcolor;
 
-        * {
-            //transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
-            @include default-animation;
-        }
 
+        // Make sure everything collapses
         *.collapse {
             width: $topbar-height !important;
         }
@@ -101,6 +80,7 @@ main#display {
                 height: 0;
             }
 
+            // TODO: fix border only appearing on input field
             #searchbar {
                 display: flex;
                 width: 100%;
@@ -226,6 +206,7 @@ main#display {
                 filter: drop-shadow(2px 2px 1px $shadow-color);
             }
 
+            // Text next to the button
             div {
                 width: calc(100% - 1.5rem - 2rem);
                 margin-left: 1rem;
@@ -241,6 +222,7 @@ main#display {
             @extend %default-center;
             @include collapse-button;
 
+            // Make text invisible
             div {
                 width: 0;
                 margin: 0;
