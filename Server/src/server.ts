@@ -5,28 +5,20 @@ import path from 'path';
 import logger from 'morgan';
 import cors from 'cors';
 import compression from 'compression';
-import express, {
-    RequestHandler,
-    NextFunction,
-    RequestParamHandler,
-    ErrorRequestHandler,
-} from 'express';
+import express, { NextFunction } from 'express';
 import debug from 'debug';
 import mongoose from 'mongoose';
 
 const adminRouter = require('./routes/admin');
 const dataRouter = require('./routes/db');
-
 const getSecret = require('./routes/connect');
 
 const app: express.Application = express();
-
 mongoose.connect(getSecret('dbUri'), {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 let db = mongoose.connection;
-
 db.on('error', console.error.bind(console, 'MongoDB connection error: '));
 
 app.use(cors());
@@ -108,4 +100,5 @@ function onListen() {
     let addr = server.address();
 
     let bind = typeof port === 'string' ? 'Pipe: ' + port : 'Port: ' + port;
+    debug(`Listening on ${bind}`);
 }

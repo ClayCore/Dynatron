@@ -41,11 +41,11 @@ class Panel extends Component<PanelProps, PanelState> {
         this.togglePanel(visible);
 
         return (
-            <div id="panel">
+            <section id="panel">
                 <Banner visible={visible} />
                 <Searchbar visible={visible} />
                 <Navigation visible={visible} />
-            </div>
+            </section>
         );
     }
 }

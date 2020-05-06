@@ -33,11 +33,21 @@ main#display {
         display: flex;
         width: 100%;
         height: 100%;
+        flex-direction: row;
     }
 }
 
 // Sidebar and topbar
 #desktop {
+    $sidebar-length: 16rem;
+    $topbar-height: 2rem;
+
+    %default-button {
+        border: 0;
+        color: $main-fgcolor;
+        background-color: $light-bgcolor;
+    }
+
     @mixin horizontal-shadow {
         box-shadow: 5px 0px 5px 0px $shadow-color;
     }
@@ -46,22 +56,24 @@ main#display {
         box-shadow: 0px 5px 5px 0px $shadow-color;
     }
 
-    $sidebar-length: 16rem;
-    $topbar-height: 2rem;
+    @mixin default-animation {
+        transition: all 0.25s ease-in-out;
+    }
 
     #sidebar {
+        $button-height: 5rem;
+        
+        background-color: $main-bgcolor;
+        color: $main-fgcolor;
+
         * {
-            transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
+            //transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
+            @include default-animation;
         }
 
         *.collapse {
             width: $topbar-height !important;
         }
-
-        $button-height: 5rem;
-
-        background-color: $main-bgcolor;
-        color: $main-fgcolor;
 
         // Panel
         #panel {
@@ -77,6 +89,16 @@ main#display {
             #banner {
                 @extend %default-center;
                 height: $banner-height;
+
+                img {
+                    width: 80%;
+                    height: auto;
+                }
+            }
+
+            #banner.collapse {
+                @extend %default-center;
+                height: 0;
             }
 
             #searchbar {
@@ -106,43 +128,77 @@ main#display {
                 input[type='text']:active {
                     color: $main-fgcolor;
                 }
+
+                .option {
+                    @extend %default-center;
+                    width: $searchbar-height;
+                    height: $searchbar-height;
+                    background-color: $lighter-bgcolor;
+
+                    svg {
+                        width: 1rem;
+                        height: 1rem;
+                        font-size: 1rem;
+                    }
+                }
             }
 
             nav {
                 width: 100%;
                 height: calc(100% - #{$banner-height} - #{$searchbar-height});
 
+                label {
+                    @extend %default-center;
+                    height: $topbar-height;
+                    justify-content: flex-start;
+                    padding-left: 1rem;
+                    background-color: $darker-bgcolor;
+                    color: $main-fgcolor;
+                    white-space: nowrap;
+                }
+
                 a {
                     @extend %default-center;
                     height: $topbar-height;
+                    text-decoration: none;
+                    color: $main-fgcolor;
                     
                     .option {
                         @extend %default-center;
-                        justify-content: flex-start;
                     }
 
                     svg {
-                        
+                        @extend %default-center;
                         width: 1.2rem;
                         height: 1.2rem;
                         font-size: 1.2rem;
                         color: $main-fgcolor;
                     }
 
-                    div {
+                    section {
+                        @extend %default-center;
+                        justify-content: flex-start;
                         height: auto;
-                        width: 30%;
+                        width: calc(100% - 4rem);
                         margin-left: 1rem;
                         font-size: 1rem;
                         font-weight: 300;
                         text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
                     }
                 }
+
+                a.collapse {
+                    section {
+                        @extend %default-center;
+                        margin: 0;
+                        width: 0;
+                    }
+                }
             }
         }
 
         // collapse/expand button
-        #button {
+        @mixin collapse-button {
             @include horizontal-shadow;
             position: fixed;
             display: flex;
@@ -154,11 +210,15 @@ main#display {
             height: $topbar-height;
             background-color: $lighter-bgcolor;
             z-index: 100;
+        }
+
+        button {
+            @extend %default-button;
+            @include collapse-button;
 
             // Icon for the button
             svg {
                 @extend %default-center;
-                margin-left: 1rem;
                 width: 1.5rem;
                 height: 1.5rem;
                 font-size: 1.5rem;
@@ -176,12 +236,23 @@ main#display {
                 text-shadow: 2px 2px 1px rgba(0, 0, 0, 0.5);
             }
         }
+
+        button.collapse {
+            @extend %default-center;
+            @include collapse-button;
+
+            div {
+                width: 0;
+                margin: 0;
+            }
+        }
     }
 
     #topbar {
         @extend %default-center;
         @include vertical-shadow;
-        position: sticky;
+        @include default-animation;
+        position: fixed;
         top: 0;
         right: 0;
         justify-content: flex-start;
@@ -190,5 +261,19 @@ main#display {
         background-color: $main-bgcolor;
         color: $main-fgcolor;
         padding-left: 1rem;
+        z-index: 200;
+    }
+
+    #topbar.collapse {
+        width: calc(100% - #{$topbar-height});
+    }
+
+    // sub webpages
+    article {
+        @extend %default-center;
+        position: relative;
+        height: calc(100% - #{$topbar-height});
+        top: $topbar-height;
+        padding: $topbar-height;
     }
 }

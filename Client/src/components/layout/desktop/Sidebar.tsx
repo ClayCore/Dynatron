@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import Panel from './Panel';
 import SidebarHook from './SidebarHook';
 
-export interface SidebarProps {}
+export interface SidebarProps {
+    getVisibleState: Function;
+}
 export interface SidebarState {
     visible: boolean;
 }
@@ -24,13 +26,20 @@ class Sidebar extends Component<SidebarProps, SidebarState> {
         this.setState({ visible: !visible });
     }
 
+    // Used for forwarding the sidebar toggle state
+    // to parent component
+    sendVisibleState() {
+        const { visible } = this.state;
+        return this.props.getVisibleState(visible);
+    }
+
     render() {
         const { visible } = this.state;
         return (
-            <div id="sidebar">
+            <section id="sidebar">
                 <Panel visible={visible} />
                 <SidebarHook visible={visible} handle={this.toggleSidebar} />
-            </div>
+            </section>
         );
     }
 }

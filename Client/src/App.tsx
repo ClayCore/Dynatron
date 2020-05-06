@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import platform from 'platform';
 
-import Wrapper from './components/layout/Wrapper';
+import Wrapper from '~/components/layout/Wrapper';
+
+import Homepage from '~/components/content/Homepage';
 
 // Utility export functions
 export function isMobile() {
@@ -28,7 +30,12 @@ class App extends Component<AppProps, AppState> {
                 <Switch>
                     <Route exact path="/">
                         <Wrapper>
-                            
+                            <Homepage />
+                        </Wrapper>
+                    </Route>
+                    <Route exact path="/home">
+                        <Wrapper>
+                            <Homepage />
                         </Wrapper>
                     </Route>
                 </Switch>

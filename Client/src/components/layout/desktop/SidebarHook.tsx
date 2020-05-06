@@ -21,7 +21,7 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
     }
 
     componentDidMount() {
-        let icon = document.querySelector('#sidebar #button svg');
+        let icon = document.querySelector('#sidebar button svg');
         this.setState({ icon: icon });
     }
 
@@ -30,17 +30,17 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
 
         if (visible) {
             return (
-                <div id="button" onClick={this.click}>
+                <button id="button" onClick={this.click}>
                     <FontAwesomeIcon icon="angle-double-left" />
                     <div>Collapse Sidebar</div>
-                </div>
+                </button>
             );
         } else {
             return (
-                <div id="button" onClick={this.click} className="collapse">
+                <button id="button" onClick={this.click} className="collapse">
                     <FontAwesomeIcon icon="angle-double-left" />
                     <div style={{ opacity: 0 }}>Collapse Sidebar</div>
-                </div>
+                </button>
             );
         }
     }
@@ -62,6 +62,14 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
 
         // Invoke the handler function for the button
         this.props.handle();
+
+        // FIXME
+        const { visible } = this.props;
+        if (visible) {
+            document.querySelector('#topbar')?.classList.add('collapse');
+        } else {
+            document.querySelector('#topbar')?.classList.remove('collapse');
+        }
 
         this.update();
     }

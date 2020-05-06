@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface SearchbarProps {
     visible: boolean;
@@ -17,15 +18,21 @@ class Searchbar extends Component<SearchbarProps, SearchbarState> {
 
         if (visible) {
             return (
-                <div id="searchbar">
+                <section id="searchbar">
                     <input type="text" placeholder="Search..." />
-                </div>
+                    <div className="option">
+                        <FontAwesomeIcon icon="search"></FontAwesomeIcon>
+                    </div>
+                </section>
             );
         } else {
             return (
-                <div id="searchbar" className="collapse">
-                    <input type="text" placeholder="Search..." />
-                </div>
+                <section id="searchbar" className="collapse">
+                    <input type="text" style={{display: 'none', paddingLeft: 0}}/>
+                    <div className="option">
+                        <FontAwesomeIcon icon="search"></FontAwesomeIcon>
+                    </div>
+                </section>
             );
         }
     }

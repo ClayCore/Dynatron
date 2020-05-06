@@ -1,7 +1,7 @@
 import React, { ReactNode, Component } from 'react';
 
-import Loader from './Loader';
-import Mobile from './Mobile';
+import Loader from '~/components/layout/Loader';
+import Display from '~/components/layout/Display';
 
 export interface WrapperProps {
     children: ReactNode;
@@ -17,10 +17,10 @@ class Wrapper extends Component<WrapperProps, WrapperState> {
 
     render() {
         return (
-            <div id="wrapper">
-                <Mobile sub={this.props.children}></Mobile>
+            <section id="wrapper">
+                <Display sub={this.props.children}></Display>
                 <Loader />
-            </div>
+            </section>
         );
     }
 }
