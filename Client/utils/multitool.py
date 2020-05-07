@@ -15,8 +15,6 @@ import os
 import getopt
 import shutil
 import pprint
-import in_place
-# import itertools
 from pathlib import Path
 from collections import Counter
 
@@ -51,7 +49,7 @@ class MultiTool(object):
         # The project root is determined by the package.json file
         # so look for it, and once it's found, return it
         path = Path.cwd()
-        for folder in range(self.max_dir_attempts):
+        for _ in range(self.max_dir_attempts):
             temp_root = Path.joinpath(path, 'package.json')
             project_root = path
             if temp_root.exists():
@@ -88,6 +86,14 @@ class MultiTool(object):
 
     def wipeout(self):
         print(f"Preparing for total wipe...\n")
+
+        # Remove the lock files too.
+        # NOTE: only supports yarn and npm
+        lockFiles = ["yarn.lock", "package-lock.json"]
+        for lock in lockFiles:
+            file = Path(self.project_root / lock)
+            os.remove(file)
+
         for path in self.wipe_paths:
             self.clean_dir(path)
 
@@ -113,15 +119,18 @@ class MultiTool(object):
                 line = temp_file[index]
                 if filename in line and not 'static' in line:
                     if '.css' in line or '.css.map' in line:
-                        temp_file[index] = line.replace(filename, str(self.static_path.name / filename))
-                    elif ('.js' in line or '.js.map' in line) and (not 'manifest' in line):
-                        temp_file[index] = line.replace(filename, str(self.static_path.name / filename))
-                    elif '__' in line:
-                        pass
+                        temp_file[index] = line.replace(
+                            filename, str(Path('.') / self.static_path.name / filename))
+                    elif ('.js' in line or '.js.map' in line) and not('manifest' in line):
+                        temp_file[index] = line.replace(
+                            filename, str(Path('.') / self.static_path.name / filename))
+                    elif '__' in line and 'manifest' in line:
+                        temp_file[index] = line
                     else:
                         for exts in self.assets:
-                            if exts.suffix in line and not '__' in line:
-                                temp_file[index] = line.replace(filename, str(self.assets_path.name / filename))
+                            if (exts.suffix in line and not '__' in line) and not ('assets' in line):
+                                temp_file[index] = line.replace(
+                                    filename, str(Path('.') / self.assets_path.name / filename))
 
         for index in self.html_files:
             with open(str(index), 'w') as file:
@@ -132,10 +141,9 @@ class MultiTool(object):
         for file in file_list:
             try:
                 if '__' in str(file):
-                    pass
+                    file.replace(file.name)
                 else:
                     file.replace(dest / file.name)
-                    print(dest / file.name)
             except Exception as e:
                 print(f"[ERROR]: Couldn't move file {file} to {dest}, {e}")
 
@@ -165,7 +173,8 @@ class MultiTool(object):
             self.js_map_files = list(self.release_path.glob('*.js.map'))
 
             # Combine to later get all the assets
-            self.relevant_files = self.html_files + self.css_files + self.js_files + self.css_map_files + self.js_map_files
+            self.relevant_files = self.html_files + self.css_files + \
+                self.js_files + self.css_map_files + self.js_map_files
             self.all_files = sorted(self.release_path.glob('*'))
 
             # Get all the other assets
@@ -185,6 +194,15 @@ class MultiTool(object):
             self.moveFiles(self.assets, self.assets_path)
 
 
+def usage():
+    print("Claymore's MultiTool")
+    print("options: ")
+    print("\thelp: \t\tshows this help menu")
+    print("\tclean: \t\tperforms a basic clean-up of build directories")
+    print("\twipe: \t\tperforms a complete clean-up")
+    print("\tpostbuild: \treorganizes project structure of the release build")
+
+
 def main():
     try:
         opts, args = getopt.getopt(
@@ -197,7 +215,7 @@ def main():
     multitool = MultiTool()
     for option in args:
         if option == 'help':
-            print('Help should be printed here')
+            usage()
         elif option == 'clean':
             multitool.clean()
         elif option == 'wipe':
