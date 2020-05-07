@@ -6,11 +6,11 @@ namespace Dynatron.Core {
     public abstract class ProgramBase {
         protected static void Run() {
             using (var window = new Window()) {
-                Application.ContentProvider = new EmbeddedContentProvider("./Client/build/debug/");
+                //window.EnableDevTools = true;
 
-                window.EnableDevTools = true;
+                Application.ContentProvider = new EmbeddedContentProvider("Client\\build\\debug");
 
-                Application.Run(window, "index.html");
+                Application.Run(window, "/index.html");
             }
         }
     }

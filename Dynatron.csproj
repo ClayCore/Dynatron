@@ -1,21 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     </PropertyGroup>
-    <ItemGroup>
-      <Compile Remove="Client\**" />
-      <Compile Remove="Server\**" />
-      <EmbeddedResource Remove="Client\**" />
-      <EmbeddedResource Remove="Server\**" />
-      <None Remove="Client\**" />
-      <None Remove="Server\**" />
+	
+	<ItemGroup>
+		<Compile Remove="node_modules\**" />
+		<None Remove="node_modules\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Include="Client\build\debug\**">
+			<LogicalName>%(RelativeDir)%(Filename)%(Extension)</LogicalName>
+		</EmbeddedResource>
     </ItemGroup>
+	
     <ItemGroup>
         <PackageReference Include="Bildstein.SpiderEye.Windows" Version="1.0.0-beta.1" />
     </ItemGroup>
+	
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
     </PropertyGroup>
