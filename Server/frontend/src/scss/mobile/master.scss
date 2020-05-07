@@ -1,0 +1,36 @@
+@use 'globals' as *;
+@use 'reset';
+@use 'fonts';
+@use 'loader';
+
+// This is necessary...
+html {
+    @extend %root-window;
+
+    body {
+        @extend %root-window;
+
+        #root {
+            @extend %root-window;
+        
+            #wrapper {
+                @extend %root-window;
+            }
+        }
+    }
+}
+
+// Disable mobile layout.
+main#display {
+    @extend %default-center;
+
+    #mobile {
+        @extend %default-center;
+        align-items: initial;
+        justify-content: initial;
+    }
+
+    #desktop {
+        display: none;
+    }
+}
