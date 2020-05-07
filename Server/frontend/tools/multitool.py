@@ -14,9 +14,9 @@ import sys
 import os
 import getopt
 import shutil
-import pprint
 from pathlib import Path
 from collections import Counter
+from colorama import Fore, Back, Style
 
 
 class MultiTool(object):
@@ -43,8 +43,10 @@ class MultiTool(object):
         self.static_path = self.release_path / 'static'
 
     def set_project_root(self):
-        print(f"We're currently in: {Path.cwd()}\n")
-        print(f"Trying to find the project root...")
+        print(
+            f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} We're currently in: {Fore.GREEN}{Path.cwd()}{Style.RESET_ALL}")
+        print(
+            f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Trying to find the project root...{Style.RESET_ALL}\n")
 
         # The project root is determined by the package.json file
         # so look for it, and once it's found, return it
@@ -53,13 +55,15 @@ class MultiTool(object):
             temp_root = Path.joinpath(path, 'package.json')
             project_root = path
             if temp_root.exists():
-                print(f"Project root found at: {project_root}\n")
+                print(
+                    f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Project root found at: {Fore.GREEN}[{project_root}]{Style.RESET_ALL}\n")
                 return project_root
             else:
                 path = path.parent
 
     def clean_dir(self, where):
-        print(f"Deleting {where}...\n")
+        print(
+            f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Deleting {Style.BRIGHT}{Fore.RED}[{where}]{Style.RESET_ALL}\n")
         if where.exists():
             # For each file/link and directory in the folder
             # unlink it and remove the entire tree
@@ -72,20 +76,24 @@ class MultiTool(object):
                         shutil.rmtree(file_path)
                 # Perhaps no access privileges?
                 except Exception as e:
-                    print(f'[ERROR]: Failed to delete {file_path}. {e}')
+                    print(
+                        f"{Style.BRIGHT}{Fore.RED}[ERROR]:{Style.RESET_ALL} Failed to delete {Style.BRIGHT}[{file_path}]\n{Style.BRIGHT}{Fore.RED}[{e}]{Style.RESET_ALL}")
 
             # Remove the build folder itself
             shutil.rmtree(where)
-            print("Clean-up complete!")
+            print(
+                f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Clean-up complete!{Style.RESET_ALL}")
         else:
             # If this happens, make sure to check your paths!
-            print('[ERROR]: Folder not found! Path: {where}')
+            print(
+                f"{Style.BRIGHT}{Fore.RED}[ERROR]:{Style.RESET_ALL} Path not found! \n{Style.BRIGHT}[{where}]{Style.RESET_ALL}")
 
     def clean(self):
         self.clean_dir(self.build_dir)
 
     def wipeout(self):
-        print(f"Preparing for total wipe...\n")
+        print(
+            f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Preparing for total wipe...{Style.RESET_ALL}")
 
         # Remove the lock files too.
         # NOTE: only supports yarn and npm
@@ -100,6 +108,11 @@ class MultiTool(object):
     # This monster function saves an html file to a temporary array,
     # modifies the temporary array paths,
     # puts it back into the file and calls it a day
+    #
+    # NOTE: I tried to do this using an `in_place` library
+    # which let's you to do file i/o on the same file in one-go
+    # but it ended up being a total failure.
+    # If anyone knows any better solution, let me know
     def alterHTML(self):
 
         # Save the contents of the file, line per line,
@@ -107,8 +120,14 @@ class MultiTool(object):
         temp_file = []
         for index in self.html_files:
             with open(str(index)) as file:
+                modline = ''
                 for line in file:
-                    temp_file.append(line)
+                    # Replace all backslashes with forward slashes for convenience sake
+                    if '\\' in line:
+                        modline = line.replace('\\', '/')
+                    else:
+                        modline = line
+                    temp_file.append(modline)
 
         # Iterate over the file, all the filenames
         # all the assets extensions and replace filenames in index.html
@@ -118,24 +137,35 @@ class MultiTool(object):
                 filename = resource.name
                 line = temp_file[index]
                 if filename in line and not 'static' in line:
+                    # Replace .css and .css.map filepaths with static paths + filename
                     if '.css' in line or '.css.map' in line:
                         temp_file[index] = line.replace(
                             filename, str(Path('.') / self.static_path.name / filename))
+                    # Replace .js and .js.map filepaths with static paths + filename
                     elif ('.js' in line or '.js.map' in line) and not('manifest' in line):
                         temp_file[index] = line.replace(
                             filename, str(Path('.') / self.static_path.name / filename))
+                    # DON'T replace .manifest filepaths.
                     elif '__' in line and 'manifest' in line:
                         temp_file[index] = line
                     else:
                         for exts in self.assets:
+                            # Add relative directories to assets too.
                             if (exts.suffix in line and not '__' in line) and not ('assets' in line):
                                 temp_file[index] = line.replace(
                                     filename, str(Path('.') / self.assets_path.name / filename))
 
+        # Open the same file and save it line by line
         for index in self.html_files:
             with open(str(index), 'w') as file:
+                modline = ''
                 for line in temp_file:
-                    file.write(line)
+                    # Replace all backslashes with forward slashes for convenience sake
+                    if '\\' in line:
+                        modline = line.replace('\\', '/')
+                    else:
+                        modline = line
+                    file.write(modline)
 
     def moveFiles(self, file_list, dest):
         for file in file_list:
@@ -145,13 +175,16 @@ class MultiTool(object):
                 else:
                     file.replace(dest / file.name)
             except Exception as e:
-                print(f"[ERROR]: Couldn't move file {file} to {dest}, {e}")
+                print(
+                    f"{Style.BRIGHT}{Fore.RED}[ERROR]:{Style.RESET_ALL} Couldn't move file {Style.BRIGHT}[{file}]{Style.RESET_ALL} to  {Style.BRIGHT}[{dest}]{Style.RESET_ALL}\n{Style.BRIGHT}{Fore.RED}[{e}]{Style.RESET_ALL}")
 
     def postbuild(self):
-        print(f"Preparing for restructure of build folders...\n")
+        print(
+            f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Preparing for restructure of build folders...{Style.RESET_ALL}")
         # Make sure the build folder and the release path exist...
         if not(self.build_dir.exists()) or not(self.release_path.exists()):
-            print(f"No production build detected!")
+            print(
+                f"{Style.BRIGHT}{Fore.RED}[ERROR]:{Style.RESET_ALL} Production build not found!{Style.RESET_ALL}")
         else:
             # Create necessary directories
             if not (self.assets_path.exists()):
@@ -183,6 +216,32 @@ class MultiTool(object):
                 if asset.is_dir():
                     self.assets.remove(asset)
 
+            print(
+                f"\n{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Postbuild statistics: {Style.RESET_ALL}")
+            print(
+                f"{Style.BRIGHT}{Fore.BLUE}[POSTBUILD]:{Style.RESET_ALL} [*.html] files: {Style.RESET_ALL}")
+            for file in self.html_files:
+                print(f"{Style.DIM}{file.name}{Style.RESET_ALL}")
+            print()
+
+            print(
+                f"{Style.BRIGHT}{Fore.BLUE}[POSTBUILD]:{Style.RESET_ALL} [*.css] and [*.css.map] files: {Style.RESET_ALL}")
+            for file in (self.css_files + self.css_map_files):
+                print(f"{Style.DIM}{file.name}{Style.RESET_ALL}")
+            print()
+
+            print(
+                f"{Style.BRIGHT}{Fore.BLUE}[POSTBUILD]:{Style.RESET_ALL} [*.js] and [*.js.map] files: {Style.RESET_ALL}")
+            for file in (self.js_files + self.js_map_files):
+                print(f"{Style.DIM}{file.name}{Style.RESET_ALL}")
+            print()
+
+            print(
+                f"{Style.BRIGHT}{Fore.BLUE}[POSTBUILD]:{Style.RESET_ALL} Assets: {Style.RESET_ALL}")
+            for file in self.assets:
+                print(f"{Style.DIM}{file.name}{Style.RESET_ALL}")
+            print()
+
             # Modify html code to accomodate for new paths
             self.alterHTML()
 
@@ -192,6 +251,9 @@ class MultiTool(object):
             self.moveFiles(self.js_files, self.static_path)
             self.moveFiles(self.js_map_files, self.static_path)
             self.moveFiles(self.assets, self.assets_path)
+
+            print(
+                f"{Style.BRIGHT}{Fore.GREEN}[INFO]:{Style.RESET_ALL} Post build complete!{Style.RESET_ALL}")
 
 
 def usage():
