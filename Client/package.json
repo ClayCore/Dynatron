@@ -8,7 +8,7 @@
     "scripts": {
         "dev": "concurrently -r \"yarn:type-check:watch\" \"yarn:start\"",
         "start": "parcel --no-autoinstall src/index.html --public-url / --out-dir build/debug",
-        "build": "yarn run type-check && parcel --no-autoinstall build src/index.html --public-url / --out-dir build/release && yarn postbuild",
+        "build": "yarn run type-check && parcel --no-autoinstall build src/index.html --public-url / --out-dir build/release",
         "test": "jest",
         "test:watch": "jest --watch",
         "type-check": "tsc --noEmit",

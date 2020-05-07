@@ -23,7 +23,7 @@ $light-fgcolor: rgb(40, 44, 52);
 }
 
 @mixin default-animation {
-    transition: all 0.25s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 @mixin apply-animation {
