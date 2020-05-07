@@ -10,7 +10,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<EmbeddedResource Include="Client\build\debug\**">
+		<EmbeddedResource Include="Client\build\release\**">
 			<LogicalName>%(RelativeDir)%(Filename)%(Extension)</LogicalName>
 		</EmbeddedResource>
     </ItemGroup>

@@ -8,7 +8,7 @@ namespace Dynatron.Core {
             using (var window = new Window()) {
                 //window.EnableDevTools = true;
 
-                Application.ContentProvider = new EmbeddedContentProvider("Client\\build\\debug");
+                Application.ContentProvider = new EmbeddedContentProvider("Client\\build\\release");
 
                 Application.Run(window, "/index.html");
             }
