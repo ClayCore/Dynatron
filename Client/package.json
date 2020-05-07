@@ -21,11 +21,7 @@
             "./src/*"
         ]
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn run test"
-        }
-    },
+    "husky": {},
     "jest": {
         "preset": "ts-jest",
         "moduleFileExtensions": [
