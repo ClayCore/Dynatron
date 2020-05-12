@@ -1,18 +1,18 @@
 $fa-font-path: '../../../assets/fonts';
 
-$main-bgcolor: rgb(24, 26, 31);
-$main-fgcolor: rgb(240, 245, 255);
-$main-accent: rgb(2, 146, 218);
+$main-bgcolor: rgb(29, 31, 34);
+$main-fgcolor: rgb(255, 255, 255);
+$main-accent: rgb(5, 97, 226);
 $main-font: 'Roboto', sans-serif;
 
 $dim-fgcolor: rgba(255, 255, 255, 0.6);
 
-$lighter-bgcolor: rgba(255, 255, 255, 0.1);
-$darker-bgcolor: rgba(0, 0, 0, 0.1);
+$lighter-bgcolor: rgb(61, 71, 85);
+$darker-bgcolor: rgb(23, 24, 26);
 $shadow-color: rgba(0, 0, 0, 0.3);
 
 $light-bgcolor: rgb(200, 200, 200);
-$light-fgcolor: rgb(40, 44, 52);
+$light-fgcolor: rgb(38, 47, 60);
 
 @mixin horizontal-shadow {
     box-shadow: 5px 0px 5px 0px $shadow-color;
@@ -52,7 +52,11 @@ $light-fgcolor: rgb(40, 44, 52);
 }
 
 %default-button {
+    @extend %default-center;
     border: 0;
+    padding: 0;
+    margin: 0;
+    outline: 0;
     color: $main-fgcolor;
-    background-color: $light-bgcolor;
+    background-color: $main-bgcolor;
 }

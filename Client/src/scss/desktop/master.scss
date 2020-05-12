@@ -26,6 +26,9 @@ main#display {
 
     #mobile {
         display: none;
+        z-index: -9999;
+        visibility: hidden;
+        opacity: 0;
     }
 
     #desktop {
@@ -79,32 +82,27 @@ main#display {
                 height: 0;
             }
 
-            // TODO: fix border only appearing on input field
             #searchbar {
                 display: flex;
                 width: 100%;
+                height: $searchbar-height;
+                box-sizing: border-box;
 
                 input[type='text'] {
                     width: calc(100% - #{$searchbar-height});
                     background-color: $lighter-bgcolor;
-                    border: 0;
-                    border-bottom: 1px solid rgb(0, 0, 0, 0);
                     box-sizing: border-box;
                     color: $dim-fgcolor;
+                    border: 0;
                     font-size: 1rem;
                     font-weight: 300;
                     height: $searchbar-height;
                     margin: 0;
                     padding: 0;
                     padding-left: 1rem;
-                    transition: all 0.3s cubic-bezier(0.65, 0.29, 0.5, 0.94);
                 }
 
                 input[type='text']:focus {
-                    border-bottom: 1px solid $main-accent;
-                }
-
-                input[type='text']:active {
                     color: $main-fgcolor;
                 }
 
@@ -243,6 +241,35 @@ main#display {
         color: $main-fgcolor;
         padding-left: 1rem;
         z-index: 200;
+
+        $left-section-width: 8rem;
+        $right-section-width: 12rem;
+
+        section {
+            display: flex;
+            height: 100%;
+            width: calc(100% - #{$right-section-width});
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        a {
+            @extend %default-center;
+            width: calc(#{$right-section-width} / 2);
+            height: 100%;
+            color: $main-fgcolor;
+            text-decoration: none;
+        }
+
+        button {
+            @extend %default-button;
+            height: 100%;
+            width: $topbar-height;
+
+            svg {
+                font-size: 1.15rem;
+            }
+        }
     }
 
     #topbar.collapse {

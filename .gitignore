@@ -1,10 +1,10 @@
+__pycache__
 .DS_Store
 .env.development.local
 .env.local
 .env.production.local
 .env.test.local
 .eslintcache
-**/.gitlab-ci.yml
 .grunt
 .lock-wscript
 .next
@@ -19,10 +19,12 @@
 *.log
 *.pid
 *.pid.lock
+*.pyc
 *.seed
 *.sln
 *.tgz
 **/.cache
+**/.gitlab-ci.yml
 **/build/
 **/dist/
 **/yarn.lock

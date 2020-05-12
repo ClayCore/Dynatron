@@ -30,14 +30,14 @@ class SidebarHook extends Component<SidebarHookProps, SidebarHookState> {
 
         if (visible) {
             return (
-                <button id="button" onClick={this.click}>
+                <button onClick={this.click}>
                     <FontAwesomeIcon icon="angle-double-left" />
                     <div>Collapse Sidebar</div>
                 </button>
             );
         } else {
             return (
-                <button id="button" onClick={this.click} className="collapse">
+                <button onClick={this.click} className="collapse">
                     <FontAwesomeIcon icon="angle-double-left" />
                     <div style={{ opacity: 0 }}>Collapse Sidebar</div>
                 </button>

@@ -1,0 +1,10 @@
+---
+project_name: 'Dynatron'
+author: 'Claymore'
+git_repo: 'https://github.com/ClayCore/Dynatron.git'
+
+setup:
+    build_dir: 'build'
+    asset_dir: 'assets'
+    static_dir: 'static'
+    package_manager: 'yarn'
